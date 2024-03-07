@@ -18,7 +18,7 @@ jobs:
       - name: Send notification
         uses: my-custom-action/send-email@v1
         with:
-          to: example@example.com
+          to: gaston.ibarra16@hotmail.com
           message: "Build successful!"
 
   # Trabajo para construir la imagen Docker y subirla a Docker Hub
