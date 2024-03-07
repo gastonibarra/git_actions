@@ -16,7 +16,7 @@ jobs:
         run: |
           # Comandos para construir el proyecto
       - name: Send notification
-        uses: my-custom-action/send-email@v1
+        uses: gastonibarra/git_actions/send-email@v1
         with:
           to: gaston.ibarra16@hotmail.com
           message: "Build successful!"
