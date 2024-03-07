@@ -22,20 +22,22 @@ jobs:
           message: "Build successful!"
 
   # Trabajo para construir la imagen Docker y subirla a Docker Hub
-  build_and_push:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Build Docker image
-        run: docker build -t my-app .
-      - name: Log into Docker Hub
-        uses: docker/login-action@v1
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-      - name: Push Docker image
-        run: docker push my-app
+  #build_and_push:
+  #  runs-on: ubuntu-latest
+  #  steps:
+  #    - name: Checkout code
+  #     uses: actions/checkout@v2
+  #    - name: Build Docker image
+  #     run: docker build -t my-app .
+  #    - name: Log into Docker Hub
+  #      uses: docker/login-action@v1
+   #     with:
+    #      username: ${{ secrets.DOCKER_USERNAME }}
+     #     password: ${{ secrets.DOCKER_PASSWORD }}
+      #- name: Push Docker image
+       # run: docker push my-app
+
+    
 
   # Trabajo para implementar en GitHub Pages
   deploy:
@@ -75,12 +77,4 @@ jobs:
             const issueComment = context.issue({ body: 'The build failed. Please check.' });
             await github.issues.createComment(issueComment);
 
-  # Trabajo para ejecutar un flujo de trabajo específico para las ramas de características en pull requests
-  feature_pr_workflow:
-    runs-on: ubuntu-latest
-    needs: [build_and_push]
-    if: github.event_name == 'pull_request' && startsWith(github.event.pull_request.head.ref, 'feature/')
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      # Add additional steps as needed for feature PR workflow
+  
