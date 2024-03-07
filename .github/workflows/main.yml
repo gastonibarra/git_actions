@@ -16,9 +16,9 @@ jobs:
         run: |
           # Comandos para construir el proyecto
       - name: Send notification
-        uses: gastonibarra/git_actions/send-email@v1
+        uses: gastonibarra/git_actions@master
         with:
-          to: gaston.ibarra16@hotmail.com
+          to: example@example.com
           message: "Build successful!"
 
   # Trabajo para construir la imagen Docker y subirla a Docker Hub
@@ -46,7 +46,7 @@ jobs:
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.TOKEN }}
           publish_dir: ./public
 
   # Trabajo para optimizar la ejecución del flujo de trabajo mediante el uso de caché para las dependencias de npm
@@ -70,7 +70,7 @@ jobs:
       - name: Send failure notification
         uses: actions/github-script@v5
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.TOKEN }}
           script: |
             const issueComment = context.issue({ body: 'The build failed. Please check.' });
             await github.issues.createComment(issueComment);
@@ -84,5 +84,3 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
       # Add additional steps as needed for feature PR workflow
-
-
