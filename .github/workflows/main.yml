@@ -5,7 +5,8 @@ on:
     branches:
       - main
 
-jobs
+jobs:
+  # Trabajo para construir el proyecto y enviar notificación
   build_and_notify:
     runs-on: ubuntu-latest
     steps:
@@ -20,8 +21,7 @@ jobs
           to: example@example.com
           message: "Build successful!"
 
-
-  # Build Docker image and push to Docker Hub
+  # Trabajo para construir la imagen Docker y subirla a Docker Hub
   build_and_push:
     runs-on: ubuntu-latest
     steps:
@@ -37,7 +37,7 @@ jobs
       - name: Push Docker image
         run: docker push my-app
 
-  # Deploy to GitHub Pages
+  # Trabajo para implementar en GitHub Pages
   deploy:
     runs-on: ubuntu-latest
     steps:
@@ -46,10 +46,10 @@ jobs
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
-          github_token: ${{ secrets.TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./public
 
-  # Optimize workflow execution by caching npm dependencies
+  # Trabajo para optimizar la ejecución del flujo de trabajo mediante el uso de caché para las dependencias de npm
   optimize:
     runs-on: ubuntu-latest
     steps:
@@ -61,27 +61,28 @@ jobs
           path: ~/.npm
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
 
-  # Send failure notification if build fails
+  # Trabajo para enviar una notificación en caso de que el flujo de trabajo falle
   notification:
     runs-on: ubuntu-latest
-    needs: [build]
+    needs: [build_and_notify]
     if: failure()
     steps:
       - name: Send failure notification
         uses: actions/github-script@v5
         with:
-          github-token: ${{ secrets.TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const issueComment = context.issue({ body: 'The build failed. Please check.' });
             await github.issues.createComment(issueComment);
 
-  # Execute a workflow specific to feature branches on pull requests
+  # Trabajo para ejecutar un flujo de trabajo específico para las ramas de características en pull requests
   feature_pr_workflow:
     runs-on: ubuntu-latest
-    needs: [build]
+    needs: [build_and_push]
     if: github.event_name == 'pull_request' && startsWith(github.event.pull_request.head.ref, 'feature/')
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
       # Add additional steps as needed for feature PR workflow
+
 
