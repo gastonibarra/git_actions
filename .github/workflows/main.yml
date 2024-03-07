@@ -6,7 +6,7 @@ on:
       - main
 
 jobs
-  build:
+  build_and_notify:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -22,7 +22,7 @@ jobs
 
 
   # Build Docker image and push to Docker Hub
-  build:
+  build_and_push:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
